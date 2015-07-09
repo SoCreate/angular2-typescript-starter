@@ -1,0 +1,13 @@
+{
+  "name": "angular2-typescript-full",
+  "version": "0.1.0",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^1.5.0-beta",
+    "tsd": "^0.6.3",
+    "gulp": "^3.9.0",
+    "traceur-runtime": "0.0.59",
+    "systemjs": "^0.18.4",
+    "angular2": "^2.0.0-alpha.30"
+  }
+}
