@@ -1,15 +1,14 @@
 var gulp = require('gulp');
 var gls = require('gulp-live-server');
 var open = require('gulp-open');
-var remoteSrc = require('gulp-remote-src');
 var del = require('del');
 var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
-var sourcemaps = require('gulp-sourcemaps');
+var sourcemaps = require('gulp-sourcemaps'); // do we need this?
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var getDirName = require('path').dirname;
-var request = require('request');
+var syncRequest = require('sync-request');
 var clientDependencies = require('./clientdependencies.json');
 
 gulp.task('get-tsds', function (callback) {
@@ -28,6 +27,7 @@ gulp.task('client-dependencies', function (callback) {
 	clientDependencies.dependencies.forEach(function (dependency) {
 		moduleSources.push(modulesRootPath + dependency);
 	});
+
 	gulp.src(moduleSources, { base: clientDependencies.modulesRootPath })
 		.pipe(gulp.dest(dest));
 
@@ -37,37 +37,22 @@ gulp.task('client-dependencies', function (callback) {
 		// TODO: might want to throw an error message if wrong remote url is used.
 		var path = dependencyUrl.slice(dependencyUrl.indexOf('://') + 3);
 		var fullPath = remotesRootPath + path;
-		if (fs.existsSync(fullPath)) {
-			remoteSources.push(fullPath);
-		}
-		else {
-			// fs.readFileSync(dependency, function (err, data) {
-			// 	if (err) throw err
-			// 	else {
-			// 		fs.writeFileSync(fullPath);
-			// 		remoteSources.push(fullPath);
-			// 	}
-			// });
-			request(dependencyUrl, function (error, response, body) {
-				if (!error && response.statusCode == 200) {
-					mkdirp(getDirName(fullPath), function (error) {
-						if (error){
-							throw error;
-						}
-						else {
-							fs.writeFileSync(fullPath, body);
-							remoteSources.push(fullPath);
-						}
-					});
-				}
-				else if (error) {
+		remoteSources.push(fullPath);
+
+		if (!fs.existsSync(fullPath)) {
+			mkdirp.sync(getDirName(fullPath), [], function (error) {
+				if (error) {
 					throw error;
 				}
 			});
+			var data = syncRequest('GET', dependencyUrl)
+			fs.writeFileSync(fullPath, data.getBody());
 		}
 	});
+
 	gulp.src(remoteSources, { base: clientDependencies.remotesRootPath })
 		.pipe(gulp.dest(dest));
+
 });
 
 gulp.task('compile-ts', function () {
