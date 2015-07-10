@@ -3,7 +3,7 @@
 	"dependencies": [
 		"angular2/angular2.js",
 		"angular2/router.js",
-		"traceur-runtime/index.js",
+		"traceur/bin/traceur-runtime.js",
 		"systemjs/dist/system.js"
 	]
 }

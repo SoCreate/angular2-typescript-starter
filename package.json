@@ -6,8 +6,10 @@
     "typescript": "^1.5.0-beta",
     "tsd": "^0.6.3",
     "gulp": "^3.9.0",
-    "traceur-runtime": "0.0.59",
     "systemjs": "^0.18.4",
-    "angular2": "^2.0.0-alpha.30"
+    "angular2": "^2.0.0-alpha.30",
+    "gulp-live-server": "0.0.23",
+    "traceur": "0.0.90",
+    "del": "^1.2.0"
   }
 }
