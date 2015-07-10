@@ -1,10 +1,12 @@
 var gulp = require('gulp');
 var gls = require('gulp-live-server');
 var open = require('gulp-open');
+var remoteSrc = require('gulp-remote-src');
 var del = require('del');
 var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
+var fs = require('fs');
 var clientDependencies = require('./clientdependencies.json');
 
 gulp.task('get-tsds', function (callback) {
@@ -18,11 +20,33 @@ gulp.task('client-dependencies', function (callback) {
 	var dest = 'src/client-dependencies'
 	del.sync([dest]);
 	var sources = [];
-	var sourceRootPath = './' + clientDependencies.rootPath + '/';
+	var modulesRootPath = './' + clientDependencies.modulesRootPath + '/';
 	clientDependencies.dependencies.forEach(function (dependency) {
-		sources.push(sourceRootPath + dependency);
+		sources.push(modulesRootPath + dependency);
 	});
-	gulp.src(sources, { base: clientDependencies.rootPath })
+	gulp.src(sources, { base: clientDependencies.modulesRootPath })
+		.pipe(gulp.dest(dest));
+
+	var remoteSources = [];
+	var remotesRootPath = './' + clientDependencies.remotesRootPath + '/';
+	clientDependencies.remoteDependencies.forEach(function (dependency) {
+		// TODO: might want to throw an error message if wrong remote url is used.
+		var path = dependency.slice(dependency.indexOf('://') + 2);
+		var fullPath = remotesRootPath + path;
+		if (fs.existsSync(fullPath)) {
+			remoteSources.push(fullPath);
+		}
+		else {
+			fs.readFileSync(dependency, function (err, data) {
+				if (err) throw err
+				else {
+					fs.writeFileSync(fullPath);
+					remoteSources.push(fullPath);
+				}
+			});
+		}
+	});
+	gulp.src(remoteSources, { base: clientDependencies.remotesRootPath })
 		.pipe(gulp.dest(dest));
 });
 
@@ -42,7 +66,7 @@ gulp.task('serve', function () {
     var server = gls.static('src', port);
     server.start();
 	gulp.src('./src/index.html')
-		.pipe(open('', { url: 'http://localhost:' + port}));
+		.pipe(open('', { url: 'http://localhost:' + port }));
     gulp.watch(['src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function () {
         server.notify.apply(server, arguments);
     });
