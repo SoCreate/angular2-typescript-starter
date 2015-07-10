@@ -1,8 +1,6 @@
 {
 	"rootPath": "node_modules",
 	"dependencies": [
-		"angular2/angular2.js",
-		"angular2/router.js",
 		"traceur/bin/traceur-runtime.js",
 		"systemjs/dist/system.js"
 	]

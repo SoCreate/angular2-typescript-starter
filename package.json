@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "description": "",
   "devDependencies": {
-    "typescript": "^1.5.0-beta",
-    "tsd": "^0.6.3",
+    "del": "^1.2.0",
     "gulp": "^3.9.0",
-    "systemjs": "^0.18.4",
-    "angular2": "^2.0.0-alpha.30",
     "gulp-live-server": "0.0.23",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-tsd": "0.0.4",
+    "gulp-typescript": "^2.7.8",
+    "systemjs": "0.16.11",
     "traceur": "0.0.90",
-    "del": "^1.2.0"
+    "tsd": "^0.6.3",
+    "typescript": "^1.5.0-beta"
   }
 }

@@ -1,2 +1,4 @@
 node_modules/
+typings/
 src/client-dependencies/
+src/**/*.js
