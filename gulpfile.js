@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gls = require('gulp-live-server');
+var open = require('gulp-open');
 var del = require('del');
 var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
@@ -37,8 +38,11 @@ gulp.task('compile-ts', function () {
 });
 
 gulp.task('serve', function () {
-    var server = gls.static('src', 8000);
+	var port = 8000;
+    var server = gls.static('src', port);
     server.start();
+	gulp.src('./src/index.html')
+		.pipe(open('', { url: 'http://localhost:' + port}));
     gulp.watch(['src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function () {
         server.notify.apply(server, arguments);
     });
