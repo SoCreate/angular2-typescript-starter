@@ -7,6 +7,9 @@ var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
 var fs = require('fs');
+var mkdirp = require('mkdirp');
+var getDirName = require('path').dirname;
+var request = require('request');
 var clientDependencies = require('./clientdependencies.json');
 
 gulp.task('get-tsds', function (callback) {
@@ -19,29 +22,46 @@ gulp.task('get-tsds', function (callback) {
 gulp.task('client-dependencies', function (callback) {
 	var dest = 'src/client-dependencies'
 	del.sync([dest]);
-	var sources = [];
+
+	var moduleSources = [];
 	var modulesRootPath = './' + clientDependencies.modulesRootPath + '/';
 	clientDependencies.dependencies.forEach(function (dependency) {
-		sources.push(modulesRootPath + dependency);
+		moduleSources.push(modulesRootPath + dependency);
 	});
-	gulp.src(sources, { base: clientDependencies.modulesRootPath })
+	gulp.src(moduleSources, { base: clientDependencies.modulesRootPath })
 		.pipe(gulp.dest(dest));
 
 	var remoteSources = [];
 	var remotesRootPath = './' + clientDependencies.remotesRootPath + '/';
-	clientDependencies.remoteDependencies.forEach(function (dependency) {
+	clientDependencies.remoteDependencies.forEach(function (dependencyUrl) {
 		// TODO: might want to throw an error message if wrong remote url is used.
-		var path = dependency.slice(dependency.indexOf('://') + 2);
+		var path = dependencyUrl.slice(dependencyUrl.indexOf('://') + 3);
 		var fullPath = remotesRootPath + path;
 		if (fs.existsSync(fullPath)) {
 			remoteSources.push(fullPath);
 		}
 		else {
-			fs.readFileSync(dependency, function (err, data) {
-				if (err) throw err
-				else {
-					fs.writeFileSync(fullPath);
-					remoteSources.push(fullPath);
+			// fs.readFileSync(dependency, function (err, data) {
+			// 	if (err) throw err
+			// 	else {
+			// 		fs.writeFileSync(fullPath);
+			// 		remoteSources.push(fullPath);
+			// 	}
+			// });
+			request(dependencyUrl, function (error, response, body) {
+				if (!error && response.statusCode == 200) {
+					mkdirp(getDirName(fullPath), function (error) {
+						if (error){
+							throw error;
+						}
+						else {
+							fs.writeFileSync(fullPath, body);
+							remoteSources.push(fullPath);
+						}
+					});
+				}
+				else if (error) {
+					throw error;
 				}
 			});
 		}
