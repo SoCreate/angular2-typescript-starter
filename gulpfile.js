@@ -72,13 +72,20 @@ gulp.task('watch-ts', ['compile-ts'], function () {
 });
 
 gulp.task('serve', function () {
+	String.prototype.endsWith = function (suffix) {
+		return this.indexOf(suffix, this.length - suffix.length) !== -1;
+	};
 	var port = 8000;
     var server = gls.static('src', port);
     server.start();
 	gulp.src('./src/index.html')
 		.pipe(open('', { url: 'http://localhost:' + port }));
-    gulp.watch(['src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function () {
-        server.notify.apply(server, arguments);
+    gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
+		if (fileInfo.path.endsWith('.ts')) {
+			runSequence('watch-ts');
+		} else {
+			server.notify.apply(server, arguments);
+		}
     });
 });
 
