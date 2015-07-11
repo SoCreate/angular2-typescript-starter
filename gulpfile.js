@@ -4,8 +4,13 @@ var open = require('gulp-open');
 var del = require('del');
 var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
-var sourcemaps = require('gulp-sourcemaps');
+var sourcemaps = require('gulp-sourcemaps'); // do we need this?
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var getDirName = require('path').dirname;
+var syncRequest = require('sync-request');
 var clientDependencies = require('./clientdependencies.json');
+var runSequence = require('run-sequence');
 
 gulp.task('get-tsds', function (callback) {
     tsd({
@@ -14,16 +19,41 @@ gulp.task('get-tsds', function (callback) {
     }, callback);
 });
 
-gulp.task('client-dependencies', function (callback) {
+gulp.task('client-dependencies', function () {
 	var dest = 'src/client-dependencies'
 	del.sync([dest]);
-	var sources = [];
-	var sourceRootPath = './' + clientDependencies.rootPath + '/';
+
+	var moduleSources = [];
+	var modulesRootPath = './' + clientDependencies.modulesRootPath + '/';
 	clientDependencies.dependencies.forEach(function (dependency) {
-		sources.push(sourceRootPath + dependency);
+		moduleSources.push(modulesRootPath + dependency);
 	});
-	gulp.src(sources, { base: clientDependencies.rootPath })
+
+	gulp.src(moduleSources, { base: clientDependencies.modulesRootPath })
 		.pipe(gulp.dest(dest));
+
+	var remoteSources = [];
+	var remotesRootPath = './' + clientDependencies.remotesRootPath + '/';
+	clientDependencies.remoteDependencies.forEach(function (dependencyUrl) {
+		// TODO: might want to throw an error message if wrong remote url is used.
+		var path = dependencyUrl.slice(dependencyUrl.indexOf('://') + 3);
+		var fullPath = remotesRootPath + path;
+		remoteSources.push(fullPath);
+
+		if (!fs.existsSync(fullPath)) {
+			mkdirp.sync(getDirName(fullPath), [], function (error) {
+				if (error) {
+					throw error;
+				}
+			});
+			var data = syncRequest('GET', dependencyUrl)
+			fs.writeFileSync(fullPath, data.getBody());
+		}
+	});
+
+	gulp.src(remoteSources, { base: clientDependencies.remotesRootPath })
+		.pipe(gulp.dest(dest));
+
 });
 
 gulp.task('compile-ts', function () {
@@ -42,10 +72,12 @@ gulp.task('serve', function () {
     var server = gls.static('src', port);
     server.start();
 	gulp.src('./src/index.html')
-		.pipe(open('', { url: 'http://localhost:' + port}));
+		.pipe(open('', { url: 'http://localhost:' + port }));
     gulp.watch(['src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function () {
         server.notify.apply(server, arguments);
     });
 });
 
-gulp.task('default', ['get-tsds', 'client-dependencies', 'compile-ts'])
+gulp.task('default', function () {
+	runSequence('get-tsds', ['client-dependencies', 'compile-ts']);
+});
