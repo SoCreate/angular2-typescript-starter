@@ -82,7 +82,7 @@ gulp.task('serve', function () {
 		.pipe(open('', { url: 'http://localhost:' + port }));
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
 		if (fileInfo.path.endsWith('.ts')) {
-			runSequence('watch-ts');
+			runSequence('compile-ts');
 		} else {
 			server.notify.apply(server, arguments);
 		}
@@ -90,5 +90,5 @@ gulp.task('serve', function () {
 });
 
 gulp.task('default', function () {
-	runSequence('get-tsds', ['client-dependencies', 'watch-ts']);
+	runSequence('get-tsds', ['client-dependencies', 'compile-ts']);
 });
