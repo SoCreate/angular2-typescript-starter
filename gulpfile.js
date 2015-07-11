@@ -67,6 +67,10 @@ gulp.task('compile-ts', function () {
 		.pipe(gulp.dest('src/'));
 });
 
+gulp.task('watch-ts', ['compile-ts'], function () {
+	gulp.watch('src/**/*.ts', ['compile-ts']);
+});
+
 gulp.task('serve', function () {
 	var port = 8000;
     var server = gls.static('src', port);
@@ -79,5 +83,5 @@ gulp.task('serve', function () {
 });
 
 gulp.task('default', function () {
-	runSequence('get-tsds', ['client-dependencies', 'compile-ts']);
+	runSequence('get-tsds', ['client-dependencies', 'watch-ts']);
 });
