@@ -35,6 +35,19 @@
 			// Port to attach to.
 			"port": 5858,
 			"sourceMaps": false
+		},
+		{
+			"name": "gulp",
+			"type": "node",
+			"program": "./node_modules/gulp/bin/gulp.js",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": ".",
+			"runtimeExecutable": null,
+			"runtimeArgs": [],
+			"env": { },
+			"sourceMaps": false,
+			"outDir": null
 		}
 	]
 }

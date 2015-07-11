@@ -11,8 +11,8 @@
     "gulp-tsd": "0.0.4",
     "gulp-typescript": "^2.7.8",
     "mkdirp": "^0.5.1",
+    "run-sequence": "^1.1.1",
     "sync-request": "^2.0.1",
-    "systemjs": "0.16.11",
     "traceur": "0.0.90",
     "tsd": "^0.6.3",
     "typescript": "^1.5.0-beta"

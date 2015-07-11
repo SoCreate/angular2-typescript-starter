@@ -10,6 +10,7 @@ var mkdirp = require('mkdirp');
 var getDirName = require('path').dirname;
 var syncRequest = require('sync-request');
 var clientDependencies = require('./clientdependencies.json');
+var runSequence = require('run-sequence');
 
 gulp.task('get-tsds', function (callback) {
     tsd({
@@ -18,7 +19,7 @@ gulp.task('get-tsds', function (callback) {
     }, callback);
 });
 
-gulp.task('client-dependencies', function (callback) {
+gulp.task('client-dependencies', function () {
 	var dest = 'src/client-dependencies'
 	del.sync([dest]);
 
@@ -77,4 +78,6 @@ gulp.task('serve', function () {
     });
 });
 
-gulp.task('default', ['get-tsds', 'client-dependencies', 'compile-ts'])
+gulp.task('default', function () {
+	runSequence('get-tsds', ['client-dependencies', 'compile-ts']);
+});
