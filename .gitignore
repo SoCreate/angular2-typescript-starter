@@ -3,3 +3,4 @@ remote_dependencies/
 typings/
 src/client-dependencies/
 src/**/*.js
+src/**/*.js.map

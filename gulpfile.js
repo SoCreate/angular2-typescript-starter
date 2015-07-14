@@ -4,7 +4,7 @@ var open = require('gulp-open');
 var del = require('del');
 var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
-var sourcemaps = require('gulp-sourcemaps'); // do we need this?
+var sourcemaps = require('gulp-sourcemaps');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var getDirName = require('path').dirname;
@@ -60,10 +60,10 @@ gulp.task('compile-ts', function () {
 	var tsProject = tsc.createProject('tsconfig.json', {
 		typescript: require('typescript')
 	});
-	var result = gulp.src('./src/**/*ts')
-		.pipe(tsc(tsProject));
-
-	return result.js
+	gulp.src('./src/**/*ts')
+		.pipe(sourcemaps.init())
+		.pipe(tsc(tsProject))
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('src/'));
 });
 
@@ -84,7 +84,8 @@ gulp.task('serve', ['compile-ts'], function () {
 		var filePath = fileInfo.path;
 		if (filePath.endsWith('.ts')) {
 			if (fileInfo.type === 'deleted') {
-				del([filePath.slice(0, filePath.length - 2) + 'js']);
+				var prefix = filePath.slice(0, filePath.length - 3);
+				del([prefix + '.js', prefix + '.js.map']);
 			} else {
 				runSequence('compile-ts');
 			}
