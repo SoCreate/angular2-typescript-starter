@@ -71,7 +71,7 @@ gulp.task('watch-ts', ['compile-ts'], function () {
 	gulp.watch('src/**/*.ts', ['compile-ts']);
 });
 
-gulp.task('serve', function () {
+gulp.task('serve', ['compile-ts'], function () {
 	String.prototype.endsWith = function (suffix) {
 		return this.indexOf(suffix, this.length - suffix.length) !== -1;
 	};
