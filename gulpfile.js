@@ -81,7 +81,11 @@ gulp.task('serve', function () {
 	gulp.src('./src/index.html')
 		.pipe(open('', { url: 'http://localhost:' + port }));
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
+		console.log(fileInfo);
 		if (fileInfo.path.endsWith('.ts')) {
+			if (fileInfo.type === 'deleted') {
+				del(fileInfo.path);
+			}
 			runSequence('compile-ts');
 		} else {
 			server.notify.apply(server, arguments);
