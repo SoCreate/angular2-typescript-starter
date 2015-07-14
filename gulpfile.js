@@ -85,9 +85,8 @@ gulp.task('serve', function () {
 		if (filePath.endsWith('.ts')) {
 			if (fileInfo.type === 'deleted') {
 				del([filePath.slice(0, filePath.length - 2) + 'js']);
-			}
-			else {
-				runSequence('compile-ts');				
+			} else {
+				runSequence('compile-ts');
 			}
 		} else {
 			server.notify.apply(server, arguments);
