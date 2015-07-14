@@ -81,12 +81,14 @@ gulp.task('serve', function () {
 	gulp.src('./src/index.html')
 		.pipe(open('', { url: 'http://localhost:' + port }));
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
-		console.log(fileInfo);
-		if (fileInfo.path.endsWith('.ts')) {
+		var filePath = fileInfo.path;
+		if (filePath.endsWith('.ts')) {
 			if (fileInfo.type === 'deleted') {
-				del(fileInfo.path);
+				del([filePath.slice(0, filePath.length - 2) + 'js']);
 			}
-			runSequence('compile-ts');
+			else {
+				runSequence('compile-ts');				
+			}
 		} else {
 			server.notify.apply(server, arguments);
 		}
