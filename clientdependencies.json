@@ -8,7 +8,7 @@
 	"remoteDependencies": [
 		"https://jspm.io/system@0.16.js",
 		"https://jspm.io/es6-module-loader@0.16.6.js",
-		"https://code.angularjs.org/2.0.0-alpha.30/angular2.dev.js",
-		"https://code.angularjs.org/2.0.0-alpha.30/router.dev.js"
+		"https://code.angularjs.org/2.0.0-alpha.31/angular2.dev.js",
+		"https://code.angularjs.org/2.0.0-alpha.31/router.dev.js"
 	]
 }
