@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var gls = require('gulp-live-server');
+var connect = require('gulp-connect');
 var open = require('gulp-open');
 var del = require('del');
 var tsd = require('gulp-tsd');
@@ -75,11 +75,19 @@ gulp.task('serve', ['compile-ts'], function () {
 	String.prototype.endsWith = function (suffix) {
 		return this.indexOf(suffix, this.length - suffix.length) !== -1;
 	};
+	
 	var port = 8000;
-    var server = gls.static('src', port);
-    server.start();
+	connect.server({
+      root: 'src',
+      port: port,
+      host: '127.0.0.1',
+      fallback: 'src/index.html',
+      livereload: true
+    });
+	
 	gulp.src('./src/index.html')
 		.pipe(open('', { url: 'http://localhost:' + port }));
+		
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.js.map', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
 		var filePath = fileInfo.path;
 		if (filePath.endsWith('.ts')) {
@@ -90,7 +98,7 @@ gulp.task('serve', ['compile-ts'], function () {
 				runSequence('compile-ts');
 			}
 		} else {
-			server.notify.apply(server, arguments);
+			 gulp.src(filePath).pipe(connect.reload());
 		}
     });
 });
