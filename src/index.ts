@@ -2,18 +2,14 @@
 import {Component, View, bootstrap, Inject} from 'angular2/angular2';
 import {httpInjectables, Http} from 'angular2/angular2';
 import {routerInjectables} from 'angular2/router';
+import {formInjectables} from 'angular2/angular2';
 
 @Component({
   selector: 'app'
 })
 @View({
-  template: 'Angular2-Typescript-Starter'
+  template: `Angular2-Typescript-Starter`
 })
 class AppComponent {
-  constructor( @Inject(Http) http: Http) {
-    http.get('people.json').observer({
-      next: (value) => console.log(value.json())
-    });
-  }
 }
-bootstrap(AppComponent, [routerInjectables, httpInjectables]);
+bootstrap(AppComponent, [routerInjectables, httpInjectables, formInjectables]);
