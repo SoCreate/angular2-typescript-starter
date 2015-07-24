@@ -63,7 +63,7 @@ gulp.task('compile-ts', function () {
 	gulp.src('./src/**/*ts')
 		.pipe(sourcemaps.init())
 		.pipe(tsc(tsProject))
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write('./', {sourceRoot: '/'}))
 		.pipe(gulp.dest('src/'));
 });
 
