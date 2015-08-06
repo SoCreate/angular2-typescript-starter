@@ -11,6 +11,7 @@ var getDirName = require('path').dirname;
 var syncRequest = require('sync-request');
 var clientDependencies = require('./clientdependencies.json');
 var runSequence = require('run-sequence');
+var rename = require("gulp-rename");
 
 gulp.task('get-tsds', function (callback) {
     tsd({
@@ -63,7 +64,7 @@ gulp.task('compile-ts', function () {
 	gulp.src('./src/**/*ts')
 		.pipe(sourcemaps.init())
 		.pipe(tsc(tsProject))
-		.pipe(sourcemaps.write('./', {sourceRoot: '/'}))
+		.pipe(sourcemaps.write('./', { sourceRoot: '/' }))
 		.pipe(gulp.dest('src/'));
 });
 
@@ -78,16 +79,16 @@ gulp.task('serve', ['compile-ts'], function () {
 	
 	var port = 8000;
 	connect.server({
-      root: 'src',
-      port: port,
-      host: '127.0.0.1',
-      fallback: 'src/index.html',
-      livereload: true
+		root: 'src',
+		port: port,
+		host: '127.0.0.1',
+		fallback: 'src/index.html',
+		livereload: true
     });
-	
+
 	gulp.src('./src/index.html')
 		.pipe(open('', { url: 'http://localhost:' + port }));
-		
+
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.js.map', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
 		var filePath = fileInfo.path;
 		if (filePath.endsWith('.ts')) {
@@ -98,9 +99,18 @@ gulp.task('serve', ['compile-ts'], function () {
 				runSequence('compile-ts');
 			}
 		} else {
-			 gulp.src(filePath).pipe(connect.reload());
+			gulp.src(filePath).pipe(connect.reload());
 		}
     });
+});
+
+gulp.task('build-sandbox', function () {
+	gulp.src("./src/index.html")
+		.pipe(rename("sandbox.html"))
+		.pipe(gulp.dest("./src"));
+	gulp.src("./src/index.ts")
+		.pipe(rename("sandbox.ts"))
+		.pipe(gulp.dest("./src"));
 });
 
 gulp.task('default', function () {
