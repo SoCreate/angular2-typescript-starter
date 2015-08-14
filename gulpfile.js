@@ -86,9 +86,6 @@ gulp.task('serve', ['compile-ts'], function () {
 		livereload: true
     });
 
-	gulp.src('./src/index.html')
-		.pipe(open('', { url: 'http://localhost:' + port }));
-
     gulp.watch(['src/**/*.ts', 'src/**/*.js', 'src/**/*.js.map', 'src/**/*.css', 'src/**/*.html'], function (fileInfo) {
 		var filePath = fileInfo.path;
 		if (filePath.endsWith('.ts')) {
