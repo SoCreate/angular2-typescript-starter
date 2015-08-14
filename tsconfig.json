@@ -13,7 +13,6 @@
         "experimentalDecorators": true
     },
     "filesGlob": [
-        "./**/*.ts",
-        "!./node_modules/**/*.ts"
+        "./src/**/*.ts"
     ]
 }
