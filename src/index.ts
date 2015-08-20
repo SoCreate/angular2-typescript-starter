@@ -1,6 +1,6 @@
-import {Component, View, bootstrap, Inject} from 'angular2/angular2';
+import {Component, View, bootstrap, Inject, bind} from 'angular2/angular2';
 import {httpInjectables, Http} from 'angular2/angular2';
-import {routerInjectables} from 'angular2/router';
+import {routerInjectables, appBaseHrefToken} from 'angular2/router';
 import {formInjectables} from 'angular2/angular2';
 
 @Component({
@@ -11,4 +11,10 @@ import {formInjectables} from 'angular2/angular2';
 })
 class AppComponent {
 }
-bootstrap(AppComponent, [routerInjectables, httpInjectables, formInjectables]);
+bootstrap(AppComponent, 
+  [
+    bind(appBaseHrefToken).toValue('/'),
+    routerInjectables, 
+    httpInjectables, 
+    formInjectables
+  ]);
