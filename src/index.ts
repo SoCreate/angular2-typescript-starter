@@ -1,7 +1,7 @@
-import {Component, View, bootstrap, Inject, bind} from 'angular2/angular2';
-import {httpInjectables, Http} from 'angular2/angular2';
-import {routerInjectables, appBaseHrefToken} from 'angular2/router';
-import {formInjectables} from 'angular2/angular2';
+import {Component, View, bootstrap, bind} from 'angular2/angular2';
+import {HTTP_BINDINGS} from 'angular2/http';
+import {ROUTER_BINDINGS, APP_BASE_HREF} from 'angular2/router';
+import {FORM_BINDINGS} from 'angular2/angular2';
 
 @Component({
   selector: 'app'
@@ -13,8 +13,8 @@ class AppComponent {
 }
 bootstrap(AppComponent, 
   [
-    bind(appBaseHrefToken).toValue('/'),
-    routerInjectables, 
-    httpInjectables, 
-    formInjectables
+    bind(APP_BASE_HREF).toValue('/'),
+    ROUTER_BINDINGS, 
+    HTTP_BINDINGS, 
+    FORM_BINDINGS
   ]);
