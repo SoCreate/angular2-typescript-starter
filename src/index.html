@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
-    <script src="/client-dependencies/traceur/bin/traceur-runtime.js"></script>
-    <script src="/client-dependencies/jspm.io/es6-module-loader@0.16.6.js"></script>
-    <script src="/client-dependencies/jspm.io/system@0.16.js"></script>
-    <script src="/client-dependencies/code.angularjs.org/2.0.0-alpha.34/angular2.dev.js"></script>
-    <script src="/client-dependencies/code.angularjs.org/2.0.0-alpha.34/router.dev.js"></script>
     <title></title>
 </head>
 <body>
     <app></app>
+    <script src="/client-dependencies/code.angularjs.org/tools/traceur-runtime.js"></script>
+    <script src="/client-dependencies/code.angularjs.org/tools/system.js"></script>
+    <script>
+        System.config({
+            baseURL: '/',
+            defaultJSExtensions: true,
+             map: {
+                index: 'index'
+            }
+        });
+    </script>
+    <script src="/client-dependencies/code.angularjs.org/2.0.0-alpha.37/angular2.dev.js"></script>
+    <script src="/client-dependencies/code.angularjs.org/2.0.0-alpha.37/router.dev.js"></script>
+    <script src="/client-dependencies/code.angularjs.org/2.0.0-alpha.37/http.dev.js"></script>
+    <script>
+        System.import('index').catch(console.log.bind(console));
+    </script>
 </body>
-<script>
-    System.config({
-        baseURL: '/'
-    });
-    System.import('index').catch(console.log.bind(console));
-</script>
 </html>
