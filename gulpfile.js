@@ -11,7 +11,8 @@ var getDirName = require('path').dirname;
 var syncRequest = require('sync-request');
 var clientDependencies = require('./clientdependencies.json');
 var runSequence = require('run-sequence');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
+var changed = require('gulp-changed');
 
 gulp.task('get-tsds', function (callback) {
     tsd({
@@ -21,7 +22,7 @@ gulp.task('get-tsds', function (callback) {
 });
 
 gulp.task('client-dependencies', function () {
-	var dest = 'src/client-dependencies'
+	var dest = 'src/client-dependencies';
 	del.sync([dest]);
 
 	var moduleSources = [];
@@ -62,6 +63,7 @@ gulp.task('compile-ts', function () {
 		typescript: require('typescript')
 	});
 	gulp.src('./src/**/*ts')
+		.pipe(changed('src/', { extension: 'js' }))
 		.pipe(sourcemaps.init())
 		.pipe(tsc(tsProject))
 		.pipe(sourcemaps.write('./', { sourceRoot: '/' }))
@@ -76,7 +78,7 @@ gulp.task('serve', ['compile-ts'], function () {
 	String.prototype.endsWith = function (suffix) {
 		return this.indexOf(suffix, this.length - suffix.length) !== -1;
 	};
-	
+
 	var port = 8000;
 	connect.server({
 		root: 'src',
@@ -102,12 +104,12 @@ gulp.task('serve', ['compile-ts'], function () {
 });
 
 gulp.task('build-sandbox', function () {
-	gulp.src("./src/index.html")
-		.pipe(rename("sandbox.html"))
-		.pipe(gulp.dest("./src"));
-	gulp.src("./src/index.ts")
-		.pipe(rename("sandbox.ts"))
-		.pipe(gulp.dest("./src"));
+	gulp.src('./src/index.html')
+		.pipe(rename('sandbox.html'))
+		.pipe(gulp.dest('./src'));
+	gulp.src('./src/index.ts')
+		.pipe(rename('sandbox.ts'))
+		.pipe(gulp.dest('./src'));
 });
 
 gulp.task('default', function () {
