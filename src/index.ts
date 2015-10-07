@@ -1,6 +1,6 @@
 import {Component, View, bootstrap, bind} from 'angular2/angular2';
 import {HTTP_BINDINGS} from 'angular2/http';
-import {ROUTER_BINDINGS, APP_BASE_HREF} from 'angular2/router';
+import {routerBindings, APP_BASE_HREF} from 'angular2/router';
 import {FORM_BINDINGS} from 'angular2/angular2';
 
 @Component({
@@ -14,7 +14,7 @@ class AppComponent {
 bootstrap(AppComponent, 
   [
     bind(APP_BASE_HREF).toValue('/'),
-    ROUTER_BINDINGS, 
+    routerBindings(AppComponent), 
     HTTP_BINDINGS, 
     FORM_BINDINGS
   ]);

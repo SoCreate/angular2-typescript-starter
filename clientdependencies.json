@@ -1,13 +1,12 @@
 {
 	"modulesRootPath": "node_modules",
 	"dependencies": [
+		"systemjs/dist/system.src.js",
+		"angular2/bundles/angular2.dev.js",
+		"angular2/bundles/router.dev.js",
+		"angular2/bundles/http.dev.js"
 	],
 	"remotesRootPath": "remote_dependencies",
 	"remoteDependencies": [
-		"https://code.angularjs.org/tools/traceur-runtime.js",
-		"https://code.angularjs.org/tools/system.js",
-		"https://code.angularjs.org/2.0.0-alpha.37/angular2.dev.js",
-		"https://code.angularjs.org/2.0.0-alpha.37/router.dev.js",
-		"https://code.angularjs.org/2.0.0-alpha.37/http.dev.js"
 	]
 }
