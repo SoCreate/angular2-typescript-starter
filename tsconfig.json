@@ -1,18 +1,15 @@
 {
-    "version": "1.5.0",
     "compilerOptions": {
         "target": "es5",
-        "module": "commonjs",
-        "declaration": false,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
+        "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "outDir": "built",
+        "rootDir": ".",
+        "sourceMap": false
     },
-    "filesGlob": [
-        "./src/**/*.ts"
+    "exclude": [
+        "node_modules"
     ]
 }

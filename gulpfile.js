@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var connect = require('gulp-connect');
 var open = require('gulp-open');
 var del = require('del');
-var tsd = require('gulp-tsd');
 var tsc = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
 var fs = require('fs');
@@ -13,13 +12,6 @@ var clientDependencies = require('./clientdependencies.json');
 var runSequence = require('run-sequence');
 var rename = require('gulp-rename');
 var changed = require('gulp-changed');
-
-gulp.task('get-tsds', function (callback) {
-    tsd({
-        command: 'reinstall',
-        config: './tsd.json'
-    }, callback);
-});
 
 gulp.task('client-dependencies', function () {
 	var dest = 'src/client-dependencies';
@@ -113,5 +105,5 @@ gulp.task('build-sandbox', function () {
 });
 
 gulp.task('default', function () {
-	runSequence('get-tsds', ['client-dependencies', 'compile-ts']);
+	runSequence('client-dependencies', ['compile-ts']);
 });
