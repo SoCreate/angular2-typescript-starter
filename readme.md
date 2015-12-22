@@ -1,7 +1,9 @@
 ## Workstation Requirements
 
-- Node.js
-- Gulp
+- [Node.js](https://nodejs.org/en/)  
+  use the *Mature and Dependable* version
+- Gulp  
+  use `npm install -g gulp` after you have installed Node
 
 ## Getting Started
 
@@ -16,3 +18,6 @@ Then to build the client dependencies in `src`:
 Finally, to start up the static server with live reload:
 
     gulp serve
+
+*If you run into any wacky issues when npming or gulping you may want to blow away the `node_modules` 
+dir and run an `npm install` again.*
