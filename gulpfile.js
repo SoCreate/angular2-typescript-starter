@@ -14,7 +14,7 @@ var rename = require('gulp-rename');
 var changed = require('gulp-changed');
 
 gulp.task('client-dependencies', function () {
-	var dest = 'src/client-dependencies';
+	var dest = 'src/client_dependencies';
 	del.sync([dest]);
 
 	var moduleSources = [];

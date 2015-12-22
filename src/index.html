@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF_8">
+    <base href="/" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <title></title>
 </head>
 <body>
     <app></app>
-    <script src="/client-dependencies/systemjs/dist/system.src.js"></script>
+    <script src="/client_dependencies/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="/client_dependencies/systemjs/dist/system.src.js"></script>
     <script>
         System.config({
             baseURL: '/',
             defaultJSExtensions: true,
-             map: {
-                index: 'index'
+            map: {
+                bootstrap: 'bootstrap'
+            },
+            paths: {
+                'rxjs/operator/*': '/client_dependencies/rxjs/add/operator/*.js',
+                'rxjs/*': '/client_dependencies/rxjs/*.js'
             }
         });
     </script>
-    <script src="/client-dependencies/angular2/bundles/angular2.dev.js"></script>
-    <script src="/client-dependencies/angular2/bundles/router.dev.js"></script>
-    <script src="/client-dependencies/angular2/bundles/http.dev.js"></script>
+    <script src="/client_dependencies/angular2/bundles/angular2.dev.js"></script>
+    <script src="/client_dependencies/angular2/bundles/router.dev.js"></script>
+    <script src="/client_dependencies/angular2/bundles/http.dev.js"></script>
     <script>
-        System.import('index').catch(console.log.bind(console));
+        System.import('bootstrap')
+            .then(null, console.error.bind(console));
     </script>
 </body>
 </html>
