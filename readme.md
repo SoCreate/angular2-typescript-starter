@@ -19,5 +19,8 @@ Finally, to start up the static server with live reload:
 
     gulp serve
 
+Open up a browser and nav to `localhost:8000`  
+
+**Note**  
 *If you run into any wacky issues when npming or gulping you may want to blow away the `node_modules` 
 dir and run an `npm install` again.*
