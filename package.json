@@ -15,11 +15,11 @@
     "run-sequence": "^1.1.1",
     "sync-request": "^2.0.1",
     "tsd": "^0.6.5",
-    "typescript": "^1.7.3"
+    "typescript": "^1.7.5"
   },
   "dependencies": {
     "rxjs": "^5.0.0-beta.0",
-    "angular2": "^2.0.0-beta.0",
-    "systemjs": "^0.19.8"
+    "angular2": "^2.0.0-beta.1",
+    "systemjs": "^0.19.13"
   }
 }
